@@ -1,2 +1,8 @@
-# Python_Learning
-python_learning_task
+### Task1
+
+##### 1、Python环境搭建
+
+###### （1）资源池
+
+​	python安装包（建议）：Anaconda（支持多种操作系统，集成了主流的科学计算包）
+
