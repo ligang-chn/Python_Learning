@@ -685,15 +685,203 @@ datetime.date(2003, 12, 2)
 
 
 
+#### 4.1  获取当前日期和时间
+
+```
+from datetime import datetime
+now=datetime.now()#获取当前datetime
+print(now)
+print(type(now))
+```
+
+​		输出结果：
+
+```
+2019-05-15 17:01:38.386550
+<class 'datetime.datetime'>
+```
+
+​		注意到`datetime`是模块，`datetime`模块还包含一个`datetime`类，通过`from datetime import datetime`导入的才是`datetime`这个类。`datetime.now()`返回当前日期和时间，其类型是`datetime`。
+
+​		
+
+------------------------------------------------------------------------------------------------
+
+#### 4.2  获取指定日期和时间
+
+​		要指定某个日期和时间，直接用参数构造一个datetime：
+
+```
+from datetime import datetime
+dt=datetime(2018,5,1,12,20)#指定日期
+print(dt)
+```
+
+​		输出结果：
+
+```
+2018-05-01 12:20:00
+```
 
 
 
+------------------------------------------------------------------
+
+#### 4.3  datetime与timestamp转换
+
+​		**datetime转换为imestamp**
+
+​		把1970年1月1日 00:00:00 UTC+00:00时区的时刻称为epoch time，记为0（1970年以前的时间timestamp为负数），当前时间就是相对于epoch time的秒数，称为timestamp。
+
+​		可以认为：
+
+```
+timestamp = 0 = 1970-1-1 00:00:00 UTC+0:00
+```
+
+​		对应的北京时间是：
+
+```
+timestamp = 0 = 1970-1-1 08:00:00 UTC+8:00
+```
+
+​		可见timestamp的值与时区毫无关系，因为timestamp一旦确定，其UTC时间就确定了，转换到任意时区的时间也是完全确定的，这就是为什么计算机存储的当前时间是以timestamp表示的，因为全球各地的计算机在任意时刻的timestamp都是完全相同的（假定时间已校准）
+
+​		把一个`datetime`类型转换为timestamp只需要简单调用`timestamp()`方法：
+
+```
+from datetime import datetime
+dt=datetime(2015,9,1,12,23)
+print(dt)
+dt1=dt.timestamp()
+print(dt1)
+```
+
+​		输出结果：
+
+​		![1557911905549](assets/1557911905549.png)
+
+​		*注意Python的timestamp是一个浮点数。如果有小数位，小数位表示毫秒数。*
+
+​		
+
+​		**timestamp转换为datetime**
+
+​		要把timestamp转换为`datetime`，使用`datetime`提供的`fromtimestamp()`方法：
+
+```
+from datetime import datetime
+t = 1429417200.0
+print(datetime.fromtimestamp(t))
+```
+
+​		*注意到timestamp是一个浮点数，它没有时区的概念，而datetime是有时区的。上述转换是在timestamp和本地时间做转换*。
+
+​		本地时间是指当前操作系统设定的时区。
 
 
 
+------------------------------
+
+#### 4.4  str与datetime转换
+
+​		**str转换为datetime**
+
+​		转换方法是通过`datetime.strptime()`实现，需要一个日期和时间的格式化字符串：
+
+```
+>>> from datetime import datetime
+>>> cday = datetime.strptime('2015-6-1 18:19:59', '%Y-%m-%d %H:%M:%S')
+>>> print(cday)
+2015-06-01 18:19:59
+```
+
+​		注意转换后的datetime是没有时区信息的。
 
 
 
+​		**datetime转换为str**
+
+​		如果已经有了datetime对象，要把它格式化为字符串显示给用户，就需要转换为str，转换方法是通过`strftime()`实现的，同样需要一个日期和时间的格式化字符串：
+
+```
+>>> from datetime import datetime
+>>> now = datetime.now()
+>>> print(now.strftime('%a, %b %d %H:%M'))
+Mon, May 05 16:28
+```
+
+
+
+------------------------------------------------------------------
+
+#### 4.5  datetime加减
+
+​		对日期和时间进行加减实际上就是把datetime往后或往前计算，得到新的datetime。加减可以直接用`+`和`-`运算符，不过需要导入`timedelta`这个类：
+
+```
+>>> from datetime import datetime, timedelta
+>>> now = datetime.now()
+>>> now
+datetime.datetime(2015, 5, 18, 16, 57, 3, 540997)
+>>> now + timedelta(hours=10)
+datetime.datetime(2015, 5, 19, 2, 57, 3, 540997)
+>>> now - timedelta(days=1)
+datetime.datetime(2015, 5, 17, 16, 57, 3, 540997)
+>>> now + timedelta(days=2, hours=12)
+datetime.datetime(2015, 5, 21, 4, 57, 3, 540997)
+```
+
+
+
+------------------------------------------------------
+
+#### 4.6  本地时间转换为UTC时间
+
+​		本地时间是指系统设定时区的时间，例如北京时间是UTC+8:00时区的时间，而UTC时间指UTC+0:00时区的时间。
+
+​		一个`datetime`类型有一个时区属性`tzinfo`，但是默认为`None`，所以无法区分这个`datetime`到底是哪个时区，除非强行给`datetime`设置一个时区。
+
+
+
+------------------------
+
+#### 4.7  时区转换
+
+​		通过`utcnow()`拿到当前的UTC时间，再转换为任意时区的时间：
+
+```
+# 拿到UTC时间，并强制设置时区为UTC+0:00:
+>>> utc_dt = datetime.utcnow().replace(tzinfo=timezone.utc)
+>>> print(utc_dt)
+2015-05-18 09:05:12.377316+00:00
+# astimezone()将转换时区为北京时间:
+>>> bj_dt = utc_dt.astimezone(timezone(timedelta(hours=8)))
+>>> print(bj_dt)
+2015-05-18 17:05:12.377316+08:00
+# astimezone()将转换时区为东京时间:
+>>> tokyo_dt = utc_dt.astimezone(timezone(timedelta(hours=9)))
+>>> print(tokyo_dt)
+2015-05-18 18:05:12.377316+09:00
+# astimezone()将bj_dt转换时区为东京时间:
+>>> tokyo_dt2 = bj_dt.astimezone(timezone(timedelta(hours=9)))
+>>> print(tokyo_dt2)
+2015-05-18 18:05:12.377316+09:00
+```
+
+​		时区转换的关键在于，拿到一个`datetime`时，要获知其正确的时区，然后强制设置时区，作为基准时间。
+
+​		利用带时区的`datetime`，通过`astimezone()`方法，可以转换到任意时区。
+
+​		注：不是必须从UTC+0:00时区转换到其他时区，任何带时区的`datetime`都可以正确转换，例如上述`bj_dt`到`tokyo_dt`的转换。
+
+
+
+​		**小结：**
+
+​		`datetime`表示的时间需要时区信息才能确定一个特定的时间，否则只能视为本地时间。
+
+​		如果要存储`datetime`，最佳方法是将其转换为timestamp再存储，因为timestamp的值与时区完全无关。
 
 
 
