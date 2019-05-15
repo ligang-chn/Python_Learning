@@ -16,11 +16,11 @@ def 函数名（参数列表）:
 
 ​		定义函数的规则：
 
-		- 函数代码块以**def**关键词开头，后接函数名和圆括号()。
-		- 任何传入参数和自变量必须放在圆括号中间，圆括号之间用于定义参数。
-		- 函数的第一行语句可以选择性地使用文档字符串—用于存放函数说明。
-		- 函数内容以冒号(:)开始，并且缩进。
-		- **return[表达式]**结束函数，选择性地返回一个值给调用方。不带表达式地return相当于返回None。
+- 函数代码块以**def**关键词开头，后接函数名和圆括号()。
+- 任何传入参数和自变量必须放在圆括号中间，圆括号之间用于定义参数。
+- 函数的第一行语句可以选择性地使用文档字符串—用于存放函数说明。
+- 函数内容以冒号(:)开始，并且缩进。
+- **return[表达式]**结束函数，选择性地返回一个值给调用方。不带表达式地return相当于返回None。
 
 
 
@@ -285,7 +285,7 @@ def outer():
 
 ​		**注意：**使用 open() 方法一定要保证关闭文件对象，即调用 close() 方法。
 
-​		open() 函数常用形式是接收两个参数：**文件名(file)**和**模式(mode)**。
+​		open() 函数常用形式是接收两个参数：**文件名(file)**和**模式(mode)**。open()返回一个file object。
 
 ```
 open(file, mode='r')
@@ -332,11 +332,22 @@ open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, clo
 |  a+  | 打开一个文件用于读写。如果该文件已存在，文件指针将会放在文件的结尾。文件打开时会是追加模式。如果该文件不存在，创建新文件用于读写。 |
 | ab+  | 以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。如果该文件不存在，创建新文件用于读写。 |
 
+​			![img](https://www.runoob.com/wp-content/uploads/2013/11/2112205-861c05b2bdbc9c28.png)
+
+|    模式    |  r   |  r+  |  w   |  w+  |  a   |  a+  |
+| :--------: | :--: | :--: | :--: | :--: | :--: | :--: |
+|     读     |  +   |  +   |      |  +   |      |  +   |
+|     写     |      |  +   |  +   |  +   |  +   |  +   |
+|    创建    |      |      |  +   |  +   |  +   |  +   |
+|    覆盖    |      |      |  +   |  +   |      |      |
+| 指针在开始 |  +   |  +   |  +   |  +   |      |      |
+| 指针在结尾 |      |      |      |      |  +   |  +   |
+
 
 
 ------------------------------------------
 
-#### 2.2  file对象
+#### 2.2  file对象方法
 
 | 序号 | 方法及描述                                                   |
 | :--- | :----------------------------------------------------------- |
@@ -354,11 +365,108 @@ open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, clo
 | 12   | [file.write(str)](https://www.runoob.com/python3/python3-file-write.html)将字符串写入文件，返回的是写入的字符长度。 |
 | 13   | [file.writelines(sequence)](https://www.runoob.com/python3/python3-file-writelines.html)向文件写入一个序列字符串列表，如果需要换行则要自己加入每行的换行符。 |
 
+​		f.read()**
+
+​		为了读取一个文件的内容，调用 f.read(size), 这将读取一定数目的数据, 然后作为字符串或字节对象返回。
+
+​	
+
+​		file.readline()**
+
+​		f.readline() 会从文件中读取单独的一行。换行符为 '\n'。f.readline() 如果返回一个空字符串, 说明已经已经读取到最后一行。
+
+
+
+​		**f.readlines()**
+
+​		f.readlines() 将返回该文件中包含的所有行。
+
+​		如果设置可选参数 sizehint, 则读取指定长度的字节, 并且将这些字节按行分割。
+
+​		
+
+​		**f.write()**
+
+​		f.write(string) 将 string 写入到文件中, 然后返回写入的字符数。
+
+​		如果要写入一些不是字符串的东西, 在写入其他类型的对象之前，需要先把它们转化为字符串（在文本模式下）或者字节对象（在二进制模式下）：
+
+```
+#!/usr/bin/python3
+
+# 打开一个文件
+f = open("/tmp/foo1.txt", "w")
+
+value = ('www.runoob.com', 14)
+s = str(value)
+f.write(s)
+
+# 关闭打开的文件
+f.close()
+```
+
+
+
+​		**f.tell()**
+
+​		f.tell() 返回文件对象当前所处的位置, 它是从文件开头开始算起的字节数。
+
+​		
+
+​		**f.seek()**
+
+​		如果要改变文件当前的位置, 可以使用 f.seek(offset, from_what) 函数。
+
+​		from_what 的值, 如果是 0 表示开头, 如果是 1 表示当前位置, 2 表示文件的结尾，例如：
+
+- seek(x,0) ： 从起始位置即文件首行首字符开始移动 x 个字符
+
+- seek(x,1) ： 表示从当前位置往后移动x个字符
+
+- seek(-x,2)：表示从文件的结尾往前移动x个字符
+
+  from_what 值为默认为0，即文件开头。下面给出一个完整的例子：
+
+```
+>>> f = open('/tmp/foo.txt', 'rb+')
+>>> f.write(b'0123456789abcdef')
+16
+>>> f.seek(5)     # 移动到文件的第六个字节
+5
+>>> f.read(1)
+b'5'
+>>> f.seek(-3, 2) # 移动到文件的倒数第三字节
+13
+>>> f.read(1)
+b'd'
+```
+
+
+
+​		**f.close()**
+
+​		在文本文件中 (那些打开文件的模式下没有 b 的), 只会相对于文件起始位置进行定位。
+
+​		当你处理完一个文件后, 调用 f.close() 来关闭文件并释放系统的资源，如果尝试再调用该文件，则会抛出异常。
+
 
 
 ------------------------------------------------------------------------
 
 #### 2.3  读写方式
+
+​		在处理文件对象时，最好使用**with关键字**。优点是当子句体结束后文件会正确关闭，即使在某个时刻引发了异常。而且使用with相比等效的try-finally代码块要简短得多。
+
+```
+>>> with open('workfile') as f:
+...     read_data = f.read()
+>>> f.closed
+True
+```
+
+​		如果没有使用with关键字，那么应该调用**f.close（）**来关闭文件并立即释放它使用的所有系统资源。如果没有显式地关闭文件，python的垃圾回收器最终将销毁该对象并为你关闭打开的文件，但这个文件可能会保持打开状态一段时间。
+
+
 
 ​		一般读写方法：
 
@@ -375,9 +483,94 @@ with open('test.txt', 'r', encoding='utf-8') as f:
 
 
 
+
+
 ------------------------------------------------------------------------
 
-#### 2.4  excel及csv文件操作
+#### 2.4  文件格式操作
+
+​		**1）使用json保存结构化数据**
+
+​		字符串可以很轻松地写入文件并从文件中读取出来。数字可能会费点劲，因为 `read()` 方法只能返回字符串，这些字符串必须传递给类似 [`int()`](https://docs.python.org/zh-cn/3/library/functions.html#int) 的函数，它会接受类似 `'123'` 这样的字符串并返回其数字值 123。
+
+​		如果想保存嵌套列表和字典这些复杂的数据类型时，手动解析和序列化会变得复杂。
+
+​		Python允许使用JSON的流行数据交换格式，
+
+​		名为 [`json`](https://docs.python.org/zh-cn/3/library/json.html#module-json) 的标准模块可以采用 Python 数据层次结构，并将它们转化为字符串表示形式；这个过程称为 *serializing* 。
+
+​		从字符串表示中重建数据称为 *deserializing* 。在序列化和反序列化之间，表示对象的字符串可能已存储在文件或数据中，或通过网络连接发送到某个远程机器。
+
+​		例如：
+
+```
+>>> import json
+>>> json.dumps([1, 'simple', 'list'])
+'[1, "simple", "list"]'
+```
+
+​		[`dumps()`](https://docs.python.org/zh-cn/3/library/json.html#json.dumps) 函数的另一个变体叫做 [`dump()`](https://docs.python.org/zh-cn/3/library/json.html#json.dump) ，它只是将对象序列化为 [text file](https://docs.python.org/zh-cn/3/glossary.html#term-text-file) 。因此，如果 `f` 是一个 [text file](https://docs.python.org/zh-cn/3/glossary.html#term-text-file) 对象，我们可以这样做:
+
+```
+json.dump(x, f)
+```
+
+​		要再次解码对象，如果 `f` 是一个打开的以供阅读的 [text file](https://docs.python.org/zh-cn/3/glossary.html#term-text-file) 对象:
+
+​		这种简单的序列化技术可以处理列表和字典，但是在JSON中序列化任意类的实例需要额外的努力。 [`json`](https://docs.python.org/zh-cn/3/library/json.html#module-json) 模块的参考包含对此的解释。
+
+
+
+​		**2）CSV文件**
+
+​		[`csv`](#module-csv) 模块中的 [`reader`](#csv.reader) 类和 [`writer`](#csv.writer) 类可用于读写序列化的数据。也可使用 [`DictReader`](#csv.DictReader) 类和 [`DictWriter`](#csv.DictWriter) 类以字典的形式读写数据。
+
+​		**读取CSV文件：**
+
+​		`reader`(*csvfile*, *dialect='excel'*, ***fmtparams*)
+
+​		需要先导入csv模块；
+
+```
+import csv
+csvfile=csv.reader(open('C:/Users/ligang/Desktop/test.csv','r'))
+print(csvfile)
+for stu in csvfile:
+    print(stu)
+```
+
+​		输出结果：
+
+​		![1557905972396](assets/1557905972396.png)
+
+​		*注意：建立的csv文件必须注意编码格式（UTF-8），否则会出现异常。*
+
+​		
+
+​		**写入CSV文件：**
+
+​		`writer`(*csvfile*, *dialect='excel'*, ***fmtparams*)
+
+​		"newline="就是说因为我们的csv文件的类型，如果不加这个东西，当我们写入东西的时候，就会出现空行。
+
+​		dialect就是定义一下文件的类型。
+
+​		写入的方法是writerow，通过写入模式对象，调用方法进行写入
+
+```
+import csv
+stu1=['marry',26]
+stu2=['bob',23]
+out=open('C:/Users/ligang/Desktop/test.csv','a',newline='')
+csvwrite=csv.writer(out,dialect='excel')
+csvwrite.writerow(stu1)
+csvwrite.writerow(stu2)
+print("ok!")
+```
+
+​		输出结果：
+
+​		![1557906527009](assets/1557906527009.png)
 
 
 
@@ -459,6 +652,64 @@ with open('test.txt', 'r', encoding='utf-8') as f:
 
 
 ## 4  datetime模块
+
+​		datetime模块为日期和时间处理同时提供了简单和复杂的方法。
+
+​		支持日期和时间算法的同时，实现的重点放在更有效的处理和格式化输出。
+
+```
+>>> # dates are easily constructed and formatted
+>>> from datetime import date
+>>> now = date.today()
+>>> now
+datetime.date(2003, 12, 2)
+>>> now.strftime("%m-%d-%y. %d %b %Y is a %A on the %d day of %B.")
+'12-02-03. 02 Dec 2003 is a Tuesday on the 02 day of December.'
+
+>>> # dates support calendar arithmetic
+>>> birthday = date(1964, 7, 31)
+>>> age = now - birthday
+>>> age.days
+14368
+```
+
+​		有两种日期和时间的对象：“naive”和“aware”。
+
+​		模块 [`calendar`](calendar.html#module-calendar)
+
+​		日历相关一般函数
+
+​		模块 [`time`](time.html#module-time)
+
+​		时间的访问和转换
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
