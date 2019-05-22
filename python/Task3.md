@@ -491,6 +491,14 @@ while 判断条件：
 
 ​		for循环可以遍历任何序列的项目，如一个列表或者一个字符串。
 
+​		可以明确循环的次数：
+
+- 遍历一个数据集内的成员
+- 在列表解析中使用
+- 生成器表达式中使用
+
+​		
+
 ​		一般格式：
 
 ```
@@ -498,7 +506,31 @@ for <variable> in <sequence>:
     <statements>
 else:
     <statements>
+    
+或者：
+for iter_var in iterable_object:
+	suite_to_repeat
 ```
+
+​		其中：iterable_object可以是string，List，Tuple，Dictionary，File。
+
+​		例如：
+
+```
+s='linux'
+for i in s:
+    print(i,end=' ')
+```
+
+​		输出结果：
+
+```
+l i n u x
+```
+
+
+
+-------------------------------------------------------------------------------------------------
 
 ​		在for循环中使用**break语句**，break语句用于跳出当前循环体：
 
@@ -514,7 +546,54 @@ else:
 print("完成循环!")
 ```
 
+​	
+
 ​		**range（）函数**
+
+​		语法格式：
+
+```
+range(start,end,step=1)
+range(start,end)
+range(end)
+```
+
+​		参数说明：
+
+​		start——起始值（包含）；
+
+​		end——终值（不包含）；
+
+​		step——步长（不能为0）；
+
+​		range(start,end,step=1)——不包含end的值；
+
+​		range(start,end)——缺省step值为1；
+
+​		range(end)——缺省了start值为0，step为1。
+
+
+
+​		range函数产生一系列整数，返回一个range对象（可迭代对象）。
+
+​		【可迭代对象——如果可以使用for循环来对某个对象进行遍历，则被遍历的这个对象就是可迭代对象。】
+
+​		例如：
+
+```
+for i in range(2,11,2):
+    print(i,end=' ')
+```
+
+​		输出结果：
+
+```
+2 4 6 8 10
+```
+
+​		由此可以看出，range()返回的也是一个可迭代对象（iterable_object）。
+
+
 
 - 如果需要遍历数字序列，可以使用内置range（）函数，它会生成数列。
 - 也可以使用range指定区间的值，或者指定不同的增量，即步长。

@@ -12,15 +12,43 @@ def 函数名（参数列表）:
     函数体
     
 #默认情况下，参数值和参数名称是按函数声明中定义地顺序匹配起来的。
+
+或者：————————————————————————————————
+def function_name([arguments]):
+	"optional documentation string"		#Docstring是函数说明，可以通过print(function_name.__doc__)l来查看
+	function_suite
 ```
 
 ​		定义函数的规则：
 
 - 函数代码块以**def**关键词开头，后接函数名和圆括号()。
+
 - 任何传入参数和自变量必须放在圆括号中间，圆括号之间用于定义参数。
+
 - 函数的第一行语句可以选择性地使用文档字符串—用于存放函数说明。
+
 - 函数内容以冒号(:)开始，并且缩进。
+
 - **return[表达式]**结束函数，选择性地返回一个值给调用方。不带表达式地return相当于返回None。
+
+  例如：
+
+```
+def add1(x):
+    'addfunction加法'
+    return (x+x)
+
+y=add1(2)
+print(y)
+print(add1.__doc__) #查看函数说明
+```
+
+​		输出结果：
+
+```
+4
+addfunction加法
+```
 
 
 
@@ -143,6 +171,8 @@ printinfo( age=50, name="runoob" )
 
 ​		*默认参数必须放在最后面。*
 
+​		*默认参数一般在函数定义时使用，关键字参数一般在函数调用时使用。*
+
 
 
 ​		**不定长参数：**
@@ -199,7 +229,9 @@ def functionname([formal_args,] **var_args_dict ):
 lambda [arg1 [,arg2,.....argn]]:expression
 ```
 
-​		
+​		![1558489192460](assets/1558489192460.png)
+
+
 
 ------------------------------------------------------------------------------
 
@@ -285,7 +317,7 @@ def outer():
 
 ​		**注意：**使用 open() 方法一定要保证关闭文件对象，即调用 close() 方法。
 
-​		open() 函数常用形式是接收两个参数：**文件名(file)**和**模式(mode)**。open()返回一个file object。
+​		open() 函数常用形式是接收两个参数：**文件名(file)**和**模式(mode)**。open()返回一个file object（可迭代）。
 
 ```
 open(file, mode='r')
@@ -301,7 +333,7 @@ open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, clo
 
 - file: 必需，文件路径（相对或者绝对路径）。
 - mode: 可选，文件打开模式
-- buffering: 设置缓冲
+- buffering: 设置缓冲，二进制文件可以不使用缓冲，但文本文件必须使用缓冲。
 - encoding: 一般使用utf8
 - errors: 报错级别
 - newline: 区分换行符
@@ -365,13 +397,13 @@ open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, clo
 | 12   | [file.write(str)](https://www.runoob.com/python3/python3-file-write.html)将字符串写入文件，返回的是写入的字符长度。 |
 | 13   | [file.writelines(sequence)](https://www.runoob.com/python3/python3-file-writelines.html)向文件写入一个序列字符串列表，如果需要换行则要自己加入每行的换行符。 |
 
-​		f.read()**
+​		**f.read()**
 
 ​		为了读取一个文件的内容，调用 f.read(size), 这将读取一定数目的数据, 然后作为字符串或字节对象返回。
 
 ​	
 
-​		file.readline()**
+​		**file.readline()**
 
 ​		f.readline() 会从文件中读取单独的一行。换行符为 '\n'。f.readline() 如果返回一个空字符串, 说明已经已经读取到最后一行。
 
@@ -882,6 +914,136 @@ datetime.datetime(2015, 5, 21, 4, 57, 3, 540997)
 ​		`datetime`表示的时间需要时区信息才能确定一个特定的时间，否则只能视为本地时间。
 
 ​		如果要存储`datetime`，最佳方法是将其转换为timestamp再存储，因为timestamp的值与时区完全无关。
+
+
+
+5  常用Python
+
+## 5  常用Python标准库函数
+
+#### 5.1  math库
+
+​		import math导入库
+
+​		help(math.ceil)查看帮助文档
+
+​		ceil——向上取整
+
+​		floor——向下取整
+
+​		pow——幂次方
+
+​		sqrt——开方
+
+​		degrees——弧度转换成角度
+
+​		radians——角度转换成弧度
+
+
+
+------------------
+
+#### 5.2  OS库
+
+​		import os导入库
+
+​		os.getcwd()——获取当前的工作目录；
+
+​		os.chdir(path)——设置path路径字符串，改变工作目录路径；
+
+​		os.rename(‘test.txt’,‘test1.txt’)——重命名；
+
+​		os.remove(‘test1.txt’)——删除文件；
+
+​		
+
+------------------------
+
+#### 5.3  random库
+
+​		import random导入库
+
+​		random.choice()——选择；
+
+​		random.randint(1,100)——生成一个1到100之间的随机整数；
+
+​		random.randrange(0,10,2)——生成一个随机整数；
+
+​		random.random()——生成一个0到1.0（不包含）之间的随机浮点数；
+
+​		random.uniform(5,10)——生成5到10之间的一个随机浮点数；
+
+​		random.sample(range(100),10)——在生成的随机数中，取10个；
+
+​		random.shuffle(list)——用于将列表中元素的顺序打乱；
+
+
+
+------
+
+#### 5.4  datetime库
+
+​		from datetime import date导入date模块
+
+​		date.today()——今天的日期；
+
+​		from datetime import time导入time模块
+
+​		tm=time(23,22,43)——创建时间23：22：43；
+
+​		from datetime import datetime导入datetime模块
+
+​		dt=datetime.now()
+
+​		dt.strftime(‘%a,%b %d %Y %H:%M’)——转换成常见格式
+
+​		![1558491667847](assets/1558491667847.png)
+
+​		timestamp()——时间戳；
+
+​		datetime.fromtimestamp()——转换成本地时间；
+
+
+
+## 6  异常
+
+#### 6.1 常见异常
+
+​		![1558492001502](assets/1558492001502.png)
+
+​		异常处理：
+
+​		try-except——对异常进行捕捉处理；
+
+​		使用方式：
+
+​		![1558492148716](assets/1558492148716.png)
+
+​		![1558492188353](assets/1558492188353.png)
+
+​		![1558492246766](assets/1558492246766.png)
+
+​		![1558492274734](assets/1558492274734.png)
+
+​		![1558492313025](assets/1558492313025.png)
+
+​		![1558492351366](assets/1558492351366.png)
+
+​		finally子句不管是否发生异常，都会执行。
+
+​		![1558492464304](assets/1558492464304.png)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
