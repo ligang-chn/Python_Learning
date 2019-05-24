@@ -167,11 +167,42 @@ linalg.det(arr)
 
 
 
+------------
+
+#### 5  NLTK语料库
+
+```python
+import nltk
+nltk.download()
+```
+
+​		弹出下载界面：
+
+​		![1558658512896](assets/1558658512896.png)
+
+```python
+from nltk.corpus import gutenberg
+import nltk
+print(gutenberg.fileids())
+texts=gutenberg.words('austen-emma.txt')
+print(texts)
+```
 
 
 
-
-
+```python
+#对数据进行添加列字段名，索引序号更改
+import pandas as pd
+qutoesdf=pd.read_csv(r'C:\Users\ligang\Desktop\2.csv')
+#print(qutoesdf)
+qutoesdf1=qutoesdf.iloc[:50,:2]
+#print(qutoesdf1)
+cols=['longitude','latitude']
+qutoesdf1.columns=cols
+#print(qutoesdf1)
+qutoesdf1.index=range(1,len(qutoesdf1)+1)
+print(qutoesdf1)
+```
 
 
 
